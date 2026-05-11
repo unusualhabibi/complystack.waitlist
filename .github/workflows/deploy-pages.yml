@@ -32,7 +32,11 @@ jobs:
         run: |
           test -f index.html
           mkdir -p _site
-          cp index.html _site/
+          rsync -av --delete \
+            --exclude '.git/' \
+            --exclude '.github/' \
+            --exclude 'README.md' \
+            ./ _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
