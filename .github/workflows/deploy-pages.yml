@@ -30,13 +30,9 @@ jobs:
 
       - name: Prepare site artifact
         run: |
-          test -f index.html
+          test -f index.html || { echo "Error: index.html not found in repository root."; exit 1; }
           mkdir -p _site
-          rsync -av --delete \
-            --exclude '.git/' \
-            --exclude '.github/' \
-            --exclude 'README.md' \
-            ./ _site/
+          rsync -av --delete --exclude-from='.pagesignore' ./ _site/
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
